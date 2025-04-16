@@ -2,7 +2,7 @@ import { useState } from "react"
 
 
 
-export default function ProjectOrTaskFrom({isTask,setProjectArray,setAddingNewProject,}){
+export default function ProjectOrTaskFrom({isTask,setProjectArray,setAddingNewProject,taskStatus}){
 
     const [title,setTitle] = useState("");
     const [description,setDescription] = useState("");
@@ -11,8 +11,10 @@ export default function ProjectOrTaskFrom({isTask,setProjectArray,setAddingNewPr
 
     const handleSubmit = (e)=>{
         e.preventDefault();
-        const data = isTask ?  {title,description} : {title,description,assignedUser,priority,status : 'Pending'};
-        setProjectArray((curr)=>[...curr,data]);
+        const data = isTask 
+        ? {title,description,assignedUser,priority,status : taskStatus,createdAt : Date.now(),commentHistory : []} 
+        : {title,description,createdAt : Date.now()}  ;
+        setProjectArray((curr)=>[data,...curr]);
         setAddingNewProject(false);
     }
 
@@ -43,7 +45,8 @@ export default function ProjectOrTaskFrom({isTask,setProjectArray,setAddingNewPr
                     </div>
                     { isTask && <div>
                         <label htmlFor="assignedUser">Assign To </label>
-                        <select id="assignedUser" value={assignedUser} onChange={(e)=>{setAssignedUser(e.target.value)}}>
+                        <select required id="assignedUser" value={assignedUser} onChange={(e)=>{setAssignedUser(e.target.value)}}>
+                            <option disabled value={""}>--Select Member--</option>
                             <option value='John Doe'>John Doe</option>
                             <option value='Mark Henry'>Mark Henry</option>
                             <option value='Elon Musk'>Elon Musk</option>
@@ -51,11 +54,12 @@ export default function ProjectOrTaskFrom({isTask,setProjectArray,setAddingNewPr
                     </div>}
                     { isTask && <div>
                         <label htmlFor="priority">Priority</label>
-                        <select id="priority" value={priority} onChange={(e)=>{setPriority(e.target.value)}}>
-                            <option value='Highest'>Highest</option>
-                            <option value='High'>High</option>
-                            <option value='Intermediate'>Intermediate</option>
-                            <option value='Neutral'>Neutral</option>
+                        <select required id="priority" value={priority} onChange={(e)=>{setPriority(e.target.value)}}>
+                            <option disabled value={""}>--Select Priority--</option>
+                            <option value={'4'}>Highest</option>
+                            <option value={'3'}>High</option>
+                            <option value={'2'}>Intermediate</option>
+                            <option value={'1'}>Neutral</option>
                         </select>
                     </div>}
                     <button type="submit">Create a {isTask ? 'Task' : 'Project'}</button>

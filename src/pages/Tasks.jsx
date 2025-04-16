@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react"
 import ProjectOrTaskFrom from "../components/ProjectOrTaskForm"
-import GridSortingStatus from "../components/GridSortingStatus";
+import TaskCard from "../components/TaskCard";
+import SortingStatus from "../components/SortingStatus";
 
 
 export default function Tasks(){
-
+    
     const [addNewTask,setAddNewTask] = useState(false);
     const [taskArray,setTaskArray] = useState([]);
     const [helperCount,setHelperCount] = useState(0);
-
-    useEffect(()=>{},[helperCount])
+    const [sortBy,setSortBy] = useState('');
+    
+    const handleSort = (sortBY)=>{
+        if(taskArray.length > 1){
+            taskArray.sort((a,b)=>{
+                return sortBY === 'Priority' ? b.priority - a.priority : b.createdAt - a.createdAt
+            })
+        }
+    }
 
     return <>
 
@@ -19,22 +27,40 @@ export default function Tasks(){
             isTask={true} 
             setAddingNewProject={setAddNewTask} 
             setProjectArray={setTaskArray}
+            taskStatus={'Pending'}
          />   
         :
         <div>
-            <div><button onClick={()=>{setAddNewTask(true)}}>Add New Task</button></div>
+            <div>
+                <button onClick={()=>{setAddNewTask(true)}}>Add New Task</button>
+                <div>
+                <label htmlFor="sortBy">Sort By</label>
+                        <select required id="sortBy" value={sortBy} onChange={(e)=>{setSortBy(e.target.value);handleSort(e.target.value)}}>
+                            <option disabled value={""}>--Select--</option>
+                            <option value='Priority'>Priority</option>
+                            <option value='Created At'>Created At</option>
+                        </select>
+                </div>
+            </div>
             <div className="grid grid-cols-3 h-screen border-2">
                 <div className="border-r-2 ">
                     <h1>Pending Tasks</h1>
-                    <GridSortingStatus taskArray={taskArray} filterStatusValue={'Pending'} setCount={setHelperCount}/>
+                    {   
+                        taskArray.length > 0 && 
+                        <SortingStatus taskArray={taskArray} setHelperCount={setHelperCount} statusValue={'Pending'} />
+                    }
                 </div>
                 <div className="border-r-2 ">
                     <h1>In Progress Tasks</h1>
-                    <GridSortingStatus taskArray={taskArray} filterStatusValue={'In Progress'} setCount={setHelperCount}/>
+                    {
+                        taskArray.length > 0 && 
+                        <SortingStatus taskArray={taskArray} setHelperCount={setHelperCount} statusValue={'In Progress'} />
+                    }
                 </div>
                 <div className="border-r-2 ">
                     <h1>Finish Tasks</h1>
-                    <GridSortingStatus taskArray={taskArray} filterStatusValue={'Finished'} setCount={setHelperCount}/>
+                    {   taskArray.length > 0 &&
+                        <SortingStatus taskArray={taskArray} setHelperCount={setHelperCount} statusValue={'Finished'}  />}
                 </div>
             </div>
         </div>}
