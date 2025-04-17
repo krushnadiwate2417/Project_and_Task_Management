@@ -28,7 +28,10 @@ export default function CommentForm({taskIndex,taskTitle,setCommenting,taskDesc}
                         value={comment}
                         onChange={(e)=>setComment(e.target.value)}
                     />
+                    <div>
                     <button type="submit">Comment</button>
+                    <button onClick={()=>{setComment('');setCommenting(false)}}>Back</button>
+                    </div>
                 </form>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import { useState } from "react"
 
 
 
-export default function ProjectOrTaskFrom({isTask,setProjectArray,setAddingNewProject,taskStatus}){
+export default function ProjectOrTaskFrom({isTask,setProjectArray,setAddingNewProject,taskStatus,setHelperArray}){
 
     const [title,setTitle] = useState("");
     const [description,setDescription] = useState("");
@@ -15,6 +15,7 @@ export default function ProjectOrTaskFrom({isTask,setProjectArray,setAddingNewPr
         ? {title,description,assignedUser,priority,status : taskStatus,createdAt : Date.now(),commentHistory : []} 
         : {title,description,createdAt : Date.now()}  ;
         setProjectArray((curr)=>[data,...curr]);
+        setHelperArray((curr)=>[data,...curr]);
         setAddingNewProject(false);
     }
 

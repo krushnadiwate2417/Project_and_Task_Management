@@ -8,15 +8,14 @@ export default function Tasks(){
     
     const [addNewTask,setAddNewTask] = useState(false);
     const [taskArray,setTaskArray] = useState([]);
+    const [helperArray,setHelperArray] = useState([]);
     const [helperCount,setHelperCount] = useState(0);
     const [sortBy,setSortBy] = useState('');
     
     const handleSort = (sortBY)=>{
-        if(taskArray.length > 1){
             taskArray.sort((a,b)=>{
-                return sortBY === 'Priority' ? b.priority - a.priority : b.createdAt - a.createdAt
+                return sortBY === 'Priority' ? b.priority - a.priority : a.createdAt - b.createdAt
             })
-        }
     }
 
     return <>
@@ -27,6 +26,7 @@ export default function Tasks(){
             isTask={true} 
             setAddingNewProject={setAddNewTask} 
             setProjectArray={setTaskArray}
+            setHelperArray={setHelperArray}
             taskStatus={'Pending'}
          />   
         :

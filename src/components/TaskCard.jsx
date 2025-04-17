@@ -30,7 +30,6 @@ export default function TaskCard({task,setHelperCount}){
         }
         
     <div
-    onClick={()=>{setCommenting(true)}}
     className="flex flex-col justify-center items-center w-40 h-40 bg-gray-400 rounded-2xl cursor-pointer"
     >
         <h1>{task.title}</h1>
@@ -53,6 +52,7 @@ export default function TaskCard({task,setHelperCount}){
         <div>
             Created On : {`${handleDate(task.createdAt)} [${handleTime(task.createdAt)}]`}
         </div>
+        <div><button onClick={()=>{setCommenting(true)}}>Add Comment</button></div>
     </div>
 </>
 }
