@@ -10,12 +10,13 @@ import LoginSignUp from './pages/LoginSignUp'
 function App() {
 
 
-  const [isAdmin,setIsAdmin] = useState(false);
+  const [globalIsAdmin,setGlobalIsAdmin] = useState(true);
+  const [projectId,setProjectId] = useState('');
 
   return (
     <>
       <GlobalContext.Provider value={
-        {isAdmin,setIsAdmin}
+        {globalIsAdmin,setGlobalIsAdmin,projectId,setProjectId}
       }>
       <BrowserRouter>
       <Header/>

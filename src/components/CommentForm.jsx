@@ -1,16 +1,26 @@
 import { useState } from "react"
+import { fetchFunction } from "../utils/fetchFunction";
+import { ADD_A_COMMENT } from "../utils/constant";
 
-export default function CommentForm({taskIndex,taskTitle,setCommenting,taskDesc}){
+export default function CommentForm({taskId,taskTitle,setCommenting,taskDesc}){
 
     const [comment,setComment] = useState('');
+    const [error,setError] = useState('');
 
-    const handleCommentSubmit = (e)=>{
+    const handleCommentSubmit = async (e)=>{
         e.preventDefault();
         const commentData = {
-            taskId : taskIndex,
-            userId : 123,
-            comment : comment
+            taskId : taskId,
+            comment : comment,
+            commentedBy : userId
         }
+        const response = await fetchFunction({
+            crudMethod : "PATCH",
+            fetchingUrl : ADD_A_COMMENT,
+            setError,
+            data : commentData
+        })
+        if(response) console.log(response);
         setCommenting(false)
     }
 
