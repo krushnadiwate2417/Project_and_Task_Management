@@ -14,7 +14,7 @@ export default function Header() {
 
 
       <nav className="flex gap-6 text-gray-700 font-medium">
-        <div onClick={()=>navigate('/')} className="cursor-pointer hover:text-blue-600 transition">Home</div>
+        <div onClick={()=>navigate('/home')} className="cursor-pointer hover:text-blue-600 transition">Home</div>
         <div className="cursor-pointer hover:text-blue-600 transition">About Us</div>
         <div className="cursor-pointer hover:text-blue-600 transition">Contact Us</div>
         <div onClick={()=>navigate('/loggedUser')} className="cursor-pointer hover:text-blue-600 transition">User</div>
