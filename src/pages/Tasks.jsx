@@ -15,12 +15,17 @@ export default function Tasks() {
   const [taskArray, setTaskArray] = useState([]);
   const [helperArray, setHelperArray] = useState([]);
   const [helperCount, setHelperCount] = useState(0);
+  const [effectUpdate,setEffectUpdate] = useState(0);
   const [sortBy, setSortBy] = useState('');
   const [error, setError] = useState('');
 
+  const storedUser = sessionStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
   useEffect(() => {
+    if(!user) return navigate('/')
     handleGetAllTasks();
-  }, []);
+  }, [effectUpdate]);
 
   const handleGetAllTasks = async () => {
     const response = await fetchFunction({
@@ -50,6 +55,7 @@ export default function Tasks() {
           setAddingNewProject={setAddNewTask}
           taskStatus={'Pending'}
           projectId={projectId}
+          setAdded={setEffectUpdate}
         />
       ) : (
         <div className="p-6">

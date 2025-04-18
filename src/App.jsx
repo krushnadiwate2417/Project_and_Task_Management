@@ -6,6 +6,7 @@ import Tasks from './pages/Tasks'
 import GlobalContext from './context/GlobalContext'
 import ProceedPage from './pages/ProceedPage'
 import LoginSignUp from './pages/LoginSignUp'
+import User from './pages/User'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path='/admin' element={<LoginSignUp/>}/>
           <Route path='/home' element={<Home/>}/>
           <Route path='/tasks' element={<Tasks/>}/>
+          <Route path='/loggedUser' element={<User/>}/>
         </Routes>
       </BrowserRouter>
       </GlobalContext.Provider>

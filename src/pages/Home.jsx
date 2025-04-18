@@ -4,17 +4,23 @@ import ProjectCard from "../components/ProjectCard";
 import { fetchFunction } from "../utils/fetchFunction";
 import { GET_PROJECTS } from "../utils/constant";
 import GlobalContext from "../context/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
   const { globalIsAdmin, setProjectId } = useContext(GlobalContext);
-
+  const [updateEffect,setUpdateEffect] = useState(0);
   const [addingNewProject, setAddingNewProject] = useState(false);
   const [projectsArray, setProjectsArray] = useState([]);
   const [error, setError] = useState("");
 
+  const storedUser = sessionStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
   useEffect(() => {
+    if(!user) return navigate('/');
     handleGetAllProjects();
-  }, []);
+  }, [updateEffect]);
 
   const handleGetAllProjects = async () => {
     const response = await fetchFunction({
@@ -37,6 +43,7 @@ export default function Home() {
           setError={setError}
           setProjectArray={setProjectsArray}
           setAddingNewProject={setAddingNewProject}
+          setAdded={setUpdateEffect}
         />
       ) : (
         <div className="p-6">

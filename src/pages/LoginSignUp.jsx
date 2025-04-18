@@ -38,6 +38,7 @@ export default function LoginSignUp() {
       setGlobalIsAdmin(
         isSignUp ? response?.newUser?.isAdmin : response?.user?.isAdmin
       );
+      sessionStorage.setItem('user',JSON.stringify(isSignUp ? response?.newUser: response?.user))
       navigate("/home");
     }
   };

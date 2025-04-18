@@ -55,6 +55,7 @@ export default function ProjectOrTaskForm({
       data,
     });
 
+    setAdded((curr)=>curr+1);
     setAddingNewProject(false);
   };
 
