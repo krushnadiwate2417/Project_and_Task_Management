@@ -12,7 +12,6 @@ export const fetchFunction = async ({crudMethod,fetchingUrl,data,setError})=>{
             })
         })
         const result = await response.json();
-        console.log(result);
         if(!response.ok) return setError(result.message);
         return result;
     } catch (error) {

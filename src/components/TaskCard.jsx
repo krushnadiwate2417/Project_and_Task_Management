@@ -73,7 +73,7 @@ export default function TaskCard({ task, setHelperCount }) {
         <div className="pt-2">
           <button
             onClick={() => setCommenting(true)}
-            className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-xs transition"
+            className="px-3 cursor-pointer py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-xs transition"
           >
             Add Comment
           </button>

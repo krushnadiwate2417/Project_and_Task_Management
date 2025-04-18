@@ -20,7 +20,7 @@ export default function ProceedCard({ imgSrc, post }) {
       />
       <button
         onClick={handleClick}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 mt-2 rounded-full transition-colors duration-300 text-sm font-medium"
+        className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-5 py-2 mt-2 rounded-full transition-colors duration-300 text-sm font-medium"
       >
         Proceed as {post}
       </button>

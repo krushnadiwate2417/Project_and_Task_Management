@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchFunction } from "../utils/fetchFunction";
 import { ADD_PROJECT, ADD_TASK, GET_ALL_USERS } from "../utils/constant";
+import Loader from "./Loader";
 
 export default function ProjectOrTaskForm({
   isTask,
@@ -15,6 +16,7 @@ export default function ProjectOrTaskForm({
   const [assignedUser, setAssignedUser] = useState("");
   const [priority, setPriority] = useState("");
   const [userList, setUserList] = useState([]);
+  const [loaderState,setLoaderState] = useState(false);
 
   useEffect(() => {
     getAllUsers();
@@ -30,6 +32,7 @@ export default function ProjectOrTaskForm({
   };
 
   const handleSubmit = async (e) => {
+    setLoaderState(false  )
     e.preventDefault();
     const data = isTask
       ? {
@@ -56,105 +59,113 @@ export default function ProjectOrTaskForm({
     });
 
     setAdded((curr)=>curr+1);
+    setLoaderState(false);
     setAddingNewProject(false);
   };
 
   return (
-    <div className="flex justify-center items-center p-6">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 w-full max-w-md p-6 bg-white rounded-xl shadow-md"
-      >
-        <input
-          placeholder={`Title of ${isTask ? "Task" : "Project"}`}
-          type="text"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-
-        <div className="flex flex-col">
-          <textarea
-            placeholder={`Description of ${isTask ? "Task" : "Project"}`}
-            maxLength={400}
+    <>
+      {
+        loaderState 
+        ? <Loader text={"Submitting"}/>
+        :
+        <div className="flex justify-center items-center p-6">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 w-full max-w-md p-6 bg-white rounded-xl shadow-md"
+        >
+          <input
+            placeholder={`Title of ${isTask ? "Task" : "Project"}`}
+            type="text"
             required
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
-            rows={4}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
-          <p className="text-sm text-gray-500 text-right">
-            {description.length}/400
-          </p>
-        </div>
-
-        {isTask && (
-          <>
-            <div className="flex flex-col">
-              <label htmlFor="assignedUser" className="font-medium mb-1">
-                Assign To
-              </label>
-              <select
-                required
-                id="assignedUser"
-                value={assignedUser}
-                onChange={(e) => setAssignedUser(e.target.value)}
-                className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option disabled value="">
-                  -- Select Member --
-                </option>
-                {userList &&
-                  userList
-                    .filter((user) => !user.isAdmin)
-                    .map((user) => (
-                      <option key={user._id} value={user.fullName}>
-                        {user.fullName}
-                      </option>
-                    ))}
-              </select>
-            </div>
-
-            <div className="flex flex-col">
-              <label htmlFor="priority" className="font-medium mb-1">
-                Priority
-              </label>
-              <select
-                required
-                id="priority"
-                value={priority}
-                onChange={(e) => setPriority(e.target.value)}
-                className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option disabled value="">
-                  -- Select Priority --
-                </option>
-                <option value="4">Highest</option>
-                <option value="3">High</option>
-                <option value="2">Intermediate</option>
-                <option value="1">Neutral</option>
-              </select>
-            </div>
-          </>
-        )}
-
-        <div className="flex justify-between">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-          >
-            Create {isTask ? "Task" : "Project"}
-          </button>
-          <button
-            type="button"
-            onClick={() => setAddingNewProject(false)}
-            className="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+  
+          <div className="flex flex-col">
+            <textarea
+              placeholder={`Description of ${isTask ? "Task" : "Project"}`}
+              maxLength={400}
+              required
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
+              rows={4}
+            />
+            <p className="text-sm text-gray-500 text-right">
+              {description.length}/400
+            </p>
+          </div>
+  
+          {isTask && (
+            <>
+              <div className="flex flex-col">
+                <label htmlFor="assignedUser" className="font-medium mb-1">
+                  Assign To
+                </label>
+                <select
+                  required
+                  id="assignedUser"
+                  value={assignedUser}
+                  onChange={(e) => setAssignedUser(e.target.value)}
+                  className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option disabled value="">
+                    -- Select Member --
+                  </option>
+                  {userList &&
+                    userList
+                      .filter((user) => !user.isAdmin)
+                      .map((user) => (
+                        <option key={user._id} value={user.fullName}>
+                          {user.fullName}
+                        </option>
+                      ))}
+                </select>
+              </div>
+  
+              <div className="flex flex-col">
+                <label htmlFor="priority" className="font-medium mb-1">
+                  Priority
+                </label>
+                <select
+                  required
+                  id="priority"
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value)}
+                  className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option disabled value="">
+                    -- Select Priority --
+                  </option>
+                  <option value="4">Highest</option>
+                  <option value="3">High</option>
+                  <option value="2">Intermediate</option>
+                  <option value="1">Neutral</option>
+                </select>
+              </div>
+            </>
+          )}
+  
+          <div className="flex justify-between">
+            <button
+              type="submit"
+              className="px-4 py-2 cursor-pointer bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+            >
+              Create {isTask ? "Task" : "Project"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setAddingNewProject(false)}
+              className="px-4 py-2 cursor-pointer bg-gray-400 text-white rounded-md hover:bg-gray-500 transition"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+      }
+    </>
   );
 }

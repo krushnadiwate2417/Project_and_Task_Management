@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import GlobalContext from "../context/GlobalContext";
 import { fetchFunction } from "../utils/fetchFunction";
 import { LOGIN_USER, SIGN_UP_USER } from "../utils/constant";
+import Loader from "../components/Loader";
 
 export default function LoginSignUp() {
   const { pathname } = useLocation();
@@ -14,6 +15,7 @@ export default function LoginSignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [loaderState,setLoaderState] = useState(false);
 
   const handleSignUporLogin = async (e) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ export default function LoginSignUp() {
     if (isSignUp && password !== confirmPass)
       return setError("Passwords do not match");
 
+    setLoaderState(true);
     const isAdmin = pathname === "/admin";
     const data = isSignUp
       ? { fullName, email, password, isAdmin }
@@ -38,13 +41,19 @@ export default function LoginSignUp() {
       setGlobalIsAdmin(
         isSignUp ? response?.newUser?.isAdmin : response?.user?.isAdmin
       );
+      setLoaderState(false);
       sessionStorage.setItem('user',JSON.stringify(isSignUp ? response?.newUser: response?.user))
       navigate("/home");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-neutral-900 p-4">
+    <>
+      {
+        loaderState 
+        ? <Loader text={"Wait a Moment"}/>
+        :
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-neutral-900 p-4">
       <div className="bg-white dark:bg-neutral-800 shadow-md rounded-xl p-8 w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">
           {isSignUp ? "Sign Up" : "Login"}
@@ -93,14 +102,14 @@ export default function LoginSignUp() {
           )}
           <button
             type="submit"
-            className="mt-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-full transition-colors duration-300"
+            className="mt-2 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-full transition-colors duration-300"
           >
             {isSignUp ? "Sign Up" : "Login"}
           </button>
         </form>
         <button
           onClick={() => setIsSignUp(!isSignUp)}
-          className="mt-6 text-sm text-blue-500 hover:text-blue-600 transition-colors duration-300 underline w-full text-center"
+          className="mt-6 text-sm cursor-pointer text-blue-500 hover:text-blue-600 transition-colors duration-300 underline w-full text-center"
         >
           {isSignUp
             ? "Already have an account? Login"
@@ -108,5 +117,7 @@ export default function LoginSignUp() {
         </button>
       </div>
     </div>
+      }
+    </>
   );
 }

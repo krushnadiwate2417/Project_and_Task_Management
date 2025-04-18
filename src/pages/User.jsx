@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 
 
 export default function User() {
+
+    const navigate = useNavigate();
     const storedUser = sessionStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
   
@@ -10,6 +13,11 @@ export default function User() {
           No user data found. Please log in again.
         </div>
       );
+    }
+
+    const handleLogOut= ()=>{
+        sessionStorage.removeItem('user');
+        navigate('/')
     }
   
     return (
@@ -27,6 +35,12 @@ export default function User() {
             </span>
           </p>
         </div>
+        <button 
+            onClick={handleLogOut} 
+            className="w-full cursor-pointer py-2 mt-6 text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            >
+            Log Out
+        </button>
       </div>
     );
   }
